@@ -6,6 +6,7 @@ import glob from 'tiny-glob/sync.js';
 import { get_utils } from '../utils.js';
 import { fileURLToPath } from 'url';
 import { SVELTE_KIT } from '../../constants.js';
+import { validate_config } from '../../config/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
@@ -27,17 +28,14 @@ const suite = uvu.suite('adapter utils');
 suite('copy files', () => {
 	const cwd = join(__dirname, 'fixtures/basic');
 
-	/** @type {import('types/config').ValidatedConfig} */
-	const config = {
+	const config = validate_config({
 		kit: {
-			// @ts-expect-error
 			files: {
 				assets: join(__dirname, 'fixtures/basic/static')
 			},
-			appDir: '_app',
-			extensions: ['.svelte']
+			appDir: '_app'
 		}
-	};
+	});
 
 	/** @type {import('types/internal').BuildData} */
 	const build_data = { client: [], server: [], static: [], entries: [] };
@@ -72,23 +70,19 @@ suite('prerender', async () => {
 	const cwd = join(__dirname, 'fixtures/prerender');
 	const prerendered_files = join(__dirname, 'fixtures/prerender/build');
 
-	/** @type {import('types/config').ValidatedConfig} */
-	const config = {
-		extensions: ['.svelte'],
+	const config = validate_config({
 		kit: {
-			// @ts-expect-error
 			files: {
 				assets: join(__dirname, 'fixtures/prerender/static'),
 				routes: join(__dirname, 'fixtures/prerender/src/routes')
 			},
 			appDir: '_app',
-			// @ts-expect-error
 			prerender: {
 				pages: ['*'],
 				enabled: true
 			}
 		}
-	};
+	});
 
 	/** @type {import('types/internal').BuildData} */
 	const build_data = { client: [], server: [], static: [], entries: ['/nested'] };
