@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
+import { validate_config } from '../config/index.js';
 import create_manifest_data from './index.js';
 
 const cwd = fileURLToPath(new URL('./test', import.meta.url));
@@ -13,10 +14,9 @@ const cwd = fileURLToPath(new URL('./test', import.meta.url));
  */
 const create = (dir, extensions = ['.svelte']) => {
 	return create_manifest_data({
-		config: {
+		config: validate_config({
 			extensions,
 			kit: {
-				// @ts-expect-error
 				files: {
 					assets: path.resolve(cwd, 'static'),
 					routes: path.resolve(cwd, dir)
@@ -26,7 +26,7 @@ const create = (dir, extensions = ['.svelte']) => {
 					exclude: []
 				}
 			}
-		},
+		}),
 		cwd,
 		output: cwd
 	});
