@@ -15,9 +15,6 @@ async function testLoadDefaultConfig(path) {
 
 	const config = await load_config({ cwd });
 
-	// @ts-expect-error
-	delete config.kit.vite; // can't test equality of a function
-
 	assert.equal(config, {
 		compilerOptions: null,
 		extensions: ['.svelte'],
@@ -58,7 +55,8 @@ async function testLoadDefaultConfig(path) {
 			router: true,
 			ssr: true,
 			target: null,
-			trailingSlash: 'never'
+			trailingSlash: 'never',
+			vite: config.kit.vite
 		},
 		preprocess: null
 	});
