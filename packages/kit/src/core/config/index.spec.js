@@ -5,9 +5,6 @@ import { deep_merge, validate_config } from './index.js';
 test('fills in defaults', () => {
 	const validated = validate_config({});
 
-	// @ts-expect-error
-	delete validated.kit.vite;
-
 	assert.equal(validated, {
 		compilerOptions: null,
 		extensions: ['.svelte'],
@@ -56,7 +53,8 @@ test('fills in defaults', () => {
 			router: true,
 			ssr: true,
 			target: null,
-			trailingSlash: 'never'
+			trailingSlash: 'never',
+			vite: validated.kit.vite
 		},
 		preprocess: null
 	});
@@ -104,9 +102,6 @@ test('fills in partial blanks', () => {
 	});
 
 	assert.equal(validated.kit.vite(), {});
-
-	// @ts-expect-error
-	delete validated.kit.vite;
 
 	assert.equal(validated, {
 		compilerOptions: null,
@@ -156,7 +151,8 @@ test('fills in partial blanks', () => {
 			router: true,
 			ssr: true,
 			target: null,
-			trailingSlash: 'never'
+			trailingSlash: 'never',
+			vite: validated.kit.vite
 		},
 		preprocess: null
 	});
